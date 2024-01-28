@@ -1,10 +1,6 @@
 #include <fmt/core.h>
+#define SDL_MAIN_HANDLED
 #include <SDL2/SDL.h>
-
-// Define to avoid "undefined WinMain reference" errors at linkage
-#ifdef _WIN32
-int WinMain(int argc, char** argv) { return main(argc, argv); }
-#endif
 
 int main(int,char**) {
 

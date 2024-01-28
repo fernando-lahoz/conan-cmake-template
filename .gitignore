@@ -5,3 +5,4 @@
 bin
 build
 CMakeUserPresets.json
+.project_name
