@@ -1,0 +1,72 @@
+{
+    "tasks": [
+        {
+            "label": "Project:   1 - Config profiles",
+            "type": "shell",
+            "command": "python3",
+            "args": ["./scripts/conan_config_profiles.py"],
+            "problemMatcher": []
+        },
+        {
+            "label": "Project:   2 - Install dependencies",
+            "type": "shell",
+            "command": "python3",
+            "args": ["./scripts/conan_install.py"],
+            "problemMatcher": []
+        },
+        {
+            "label": "Project:   2 - Install dependencies (Release)",
+            "type": "shell",
+            "command": "python3",
+            "args": ["./scripts/conan_install.py", "Release"],
+            "problemMatcher": []
+        },
+        {
+            "label": "Project:   2 - Install dependencies (Debug)",
+            "type": "shell",
+            "command": "python3",
+            "args": ["./scripts/conan_install.py", "Debug"],
+            "problemMatcher": []
+        },
+        {
+            "label": "Project:   2.5 - Patch SDL2_image (only windows)",
+            "type": "shell",
+            "command": "python3",
+            "args": ["./scripts/patch_sdl2_image.py"],
+            "problemMatcher": []
+        },
+        {
+            "label": "Project:   3 - CMake Config",
+            "type": "shell",
+            "command": "python3",
+            "args": ["./scripts/cmake_config.py"],
+            "problemMatcher": []
+        },
+        {
+            "label": "Project:   3 - CMake Config (Release)",
+            "type": "shell",
+            "command": "python3",
+            "args": ["./scripts/cmake_config.py", "Release"],
+            "problemMatcher": []
+        },
+        {
+            "label": "Project:   3 - CMake Config (Debug)",
+            "type": "shell",
+            "command": "python3",
+            "args": ["./scripts/cmake_config.py", "Debug"],
+            "problemMatcher": []
+        },
+        {
+            "label": "Project:   4 - Build",
+            "type": "shell",
+            "command": "python3",
+            "args": ["./scripts/cmake_build.py"],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        }
+    ],
+    "version": "2.0.0"
+}
