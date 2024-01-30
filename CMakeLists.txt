@@ -3,9 +3,9 @@ project(project_name LANGUAGES CXX)
 
 #-------------------------- COMPILATION FLAGS ----------------------------------
 
-set(CMAKE_CXX_FLAGS "-Wall -Wextra -std=c++20 -save-temps -static-libstdc++")
+set(CMAKE_CXX_FLAGS "-Wall -Wextra -pedantic -std=c++20 -save-temps -static-libstdc++")
 set(CMAKE_CXX_FLAGS_DEBUG "-g")
-set(CMAKE_CXX_FLAGS_RELEASE "-O3 -Ofast")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3 -Ofast -DNDEBUG")
 
 #------------------------ BINARY FILES LOCATION --------------------------------
 
@@ -33,7 +33,7 @@ set(SubProjects
 
 set(Modules
     # Order matters! If A depends on B, B must be higher than A
-    
+    simple_mod
 )
 
 #--------------------------- EXTERNAL LIBRARIES --------------------------------
@@ -46,21 +46,21 @@ set(Libraries
 
 set(Targets
     fmt::fmt
-    SDL2::SDL2main
+    SDL2::SDL2main SDL2::SDL2
     SDL2_image::SDL2_image
 )
 
-link_directories(
+foreach(Lib IN LISTS Libraries)
+    find_package(${Lib} REQUIRED GLOBAL)
+endforeach()
+
+set(LibDirectories
     ${fmt_INCLUDE_DIRS}
     ${SDL2_INCLUDE_DIRS}
-    ${SDL2IMAGE_INCLUDE_DIRS}
+    ${SDL2_image_INCLUDE_DIRS}
 )
 
 #---------------------------- OBJECT COMPILATION -------------------------------
-
-foreach(Lib IN LISTS Libraries)
-    find_package(${Lib} REQUIRED)
-endforeach()
 
 #Header only Subprojects
 foreach(Header IN LISTS HeaderOnlyProjects)
@@ -87,6 +87,10 @@ foreach(Mod IN LISTS Modules)
         set(ModNames "${ModNames};${ModName}")
     endif()
     add_library(${ModName} STATIC "src/${Mod}.cpp")
+
+    foreach(Dir IN LISTS LibDirectories)
+        target_include_directories(${ModName} PUBLIC ${Dir})
+    endforeach()
 endforeach()
 
 #----------------------- EXECUTABLE FILES COMPILATION --------------------------
@@ -105,6 +109,10 @@ foreach(Executable IN LISTS Executables)
 
     add_executable(${ExecutableName} "${ExecutablePath}")
 
+    foreach(Target IN LISTS Targets)
+        target_link_libraries(${ExecutableName} LINK_PUBLIC ${Target})
+    endforeach()
+
     foreach(Mod IN LISTS ModNames)
         target_link_libraries(${ExecutableName} LINK_PUBLIC ${Mod}) 
     endforeach()
@@ -113,9 +121,6 @@ foreach(Executable IN LISTS Executables)
         target_link_libraries(${ExecutableName} LINK_PUBLIC ${Project})
     endforeach()
 
-    foreach(Target IN LISTS Targets)
-        target_link_libraries(${ExecutableName} PRIVATE ${Target})
-    endforeach()
 endforeach()
 
 #---

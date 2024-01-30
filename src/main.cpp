@@ -2,9 +2,11 @@
 #define SDL_MAIN_HANDLED
 #include <SDL2/SDL.h>
 
+#include "simple_mod.hpp"
+
 int main(int,char**) {
 
-    fmt::println("Hello World!");
+    print_hello_world();
 
     int init_flags = SDL_INIT_TIMER | SDL_INIT_VIDEO;
     if (SDL_Init(init_flags) != 0) {
